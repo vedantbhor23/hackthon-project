@@ -36,5 +36,31 @@ test_passenger_ids = test['PassengerId'].copy()
 
 
 
-# In[7]:
+
+# 2. helper feature functions
+def extract_title(name):
+    m = re.search(r',\s*([^.]*)\.', name)
+    if m:
+        return m.group(1).strip()
+    return 'Unknown'
+
+def simplify_title(title):
+    title = title.lower()
+    if title in ['mr','mrs','miss','master']:
+        return title
+    # map similar variants
+    if 'mrs' in title: return 'mrs'
+    if 'miss' in title: return 'miss'
+    if 'master' in title: return 'master'
+    if 'mr' in title: return 'mr'
+    return 'rare'
+
+# combine for consistent transforms
+full = pd.concat([train.drop(columns='Survived'), test], axis=0, ignore_index=True)
+
+
+
+# In[8]:
+
+
 
